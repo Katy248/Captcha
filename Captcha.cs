@@ -28,16 +28,17 @@ public class Captcha : IDisposable
     private Bitmap GenerateImage(int height, int width)
     {
         using (CaptchaImageBuilder cib = new CaptchaImageBuilder(height, width))
-        {
             return cib
                 .FillBackground(RandomColor())
                 .DrawText(answer, Color.White)
                 .AddEffect((gr, x, y) =>
                 {
-                    if (x % 5 == 0) gr.DrawRectangle(new Pen(new SolidBrush(RandomColor())), x, y, 2, 2);
+                if (x % 5 == 0)
+                        using (SolidBrush sb = new SolidBrush(RandomColor()))
+                        using (Pen pen = new Pen(new SolidBrush(RandomColor())))
+                            gr.DrawRectangle(pen, x, y, 2, 2);
                 })
                 .Image();
-        }
     }
     Color RandomColor() => Color.FromArgb(random.Next(255), random.Next(255), random.Next(255));
     void IDisposable.Dispose()
