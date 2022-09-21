@@ -11,7 +11,7 @@ public class Captcha : IDisposable
     }
     private readonly string answer;
     private readonly Bitmap image;
-    private Random random = new Random();
+    private static Random random = new Random();
 
     public Bitmap Image => image;
     public bool CheckAnswer(string answer) => string.Equals(this.answer, answer);
