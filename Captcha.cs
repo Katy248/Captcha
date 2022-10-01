@@ -9,6 +9,11 @@ public class Captcha : IDisposable
         answer = GenerateAnswer(length);
         image = GenerateImage(200, 90 * length);
     }
+    public Captcha(string captchaText)
+    {
+        answer = captchaText;
+        image = GenerateImage(200, 90 * captchaText.Length);
+    }
     private readonly string answer;
     private readonly Bitmap image;
     private static Random random = new Random();
@@ -33,10 +38,10 @@ public class Captcha : IDisposable
                 .DrawText(answer, Color.White)
                 .AddEffect((gr, x, y) =>
                 {
-                if (x % 5 == 0)
-                        using (SolidBrush sb = new SolidBrush(RandomColor()))
-                        using (Pen pen = new Pen(new SolidBrush(RandomColor())))
-                            gr.DrawRectangle(pen, x, y, 2, 2);
+                    if (x % 5 != 0) return;
+                    using (SolidBrush sb = new SolidBrush(RandomColor()))
+                    using (Pen pen = new Pen(new SolidBrush(RandomColor())))
+                        gr.DrawRectangle(pen, x, y, 2, 2);
                 })
                 .Image();
     }
